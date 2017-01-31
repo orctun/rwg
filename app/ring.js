@@ -1,5 +1,5 @@
 var window = window;
-		window.tick = 25;
+		window.tick = 20;
 		window.time = 0;
 
 		window.load = function (update) {

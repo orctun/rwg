@@ -168,7 +168,7 @@ game.create.phys = function (_) {
 								game.zen (object);
 							}
 						} else {
-							if (object.y + object.h + object.speed <= canvas.height) {
+							if (object.y + object.h <= canvas.height) {
 								if (object.float < 0) {
 									object.y = object.y + object.speed;
 									game.zen (object);

@@ -1,7 +1,7 @@
 game.get.a ({});
 
 game.get.i ([
-	'bag', 'bag_error', //50 50
+	'bag', 'bag_error', //50 25
 	'ban', 'ban_error', //50 50
 	'box', 'box_error', //50 50
 	'cap', 'cap_error', //50 100
