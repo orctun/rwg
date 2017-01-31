@@ -12,11 +12,14 @@ game.scene.menu = function () {
 
 	//ship
 	game.create.item ({ block: false, float: 1, h: 50, i: 'sail', w: 50, weight: 1, x: 800, y: 200 }).load ();
+	game.create.item ({ block: false, float: 1, h: 50, i: 'sail', w: 50, weight: 1, x: 800, y: 300 }).load ();
 
 	game.create.item ({ block: true, float: -1, h: 50, i: 'mast', w: 25, weight: 1, x: 300, y: 200 }).load ();
+
 	game.create.item ({ block: true, float: 0, h: 50, i: 'plank', w: 50, weight: 1, x: 400, y: 200 }).load ();
 	game.create.item ({ block: true, float: 0, h: 50, i: 'plank', w: 50, weight: 1, x: 500, y: 200 }).load ();
 	game.create.item ({ block: true, float: 0, h: 50, i: 'plank', w: 50, weight: 1, x: 600, y: 200 }).load ();
 	game.create.item ({ block: true, float: 0, h: 50, i: 'plank', w: 50, weight: 1, x: 700, y: 200 }).load ();
 
+	game.create.item ({ block: true, float: -1, h: 50, i: 'box', w: 50, weight: 1, x: 400, y: 100 }).load ();
 }

@@ -162,16 +162,22 @@ game.create.phys = function (_) {
 				if (object.type == 'item') {
 					object.speed += phys.g;
 					if (!phys.collision ({ h: object.h, id: object.id, w: object.w, x: object.x, y: object.y + object.speed })) {
-						if (object.y + object.h + object.speed < canvas.height - phys.waterline + 0.5 * object.h) {
+						if (object.y + object.h + object.speed <= canvas.height - phys.waterline + 0.5 * object.h) {
 							if (object.float <= 0) {
 								object.y = object.y + object.speed;
 								game.zen (object);
-							} else {
-								object.speed = 0;
 							}
 						} else {
+							if (object.y + object.h + object.speed <= canvas.height) {
+								if (object.float < 0) {
+									object.y = object.y + object.speed;
+									game.zen (object);
+								}
+							}
 							object.speed = 0;
 						}
+					} else {
+						object.speed = 0;
 					}
 				}
 			}
