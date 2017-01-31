@@ -1,5 +1,5 @@
 var window = window;
-		window.tick = 40;
+		window.tick = 25;
 		window.time = 0;
 
 		window.load = function (update) {
@@ -319,7 +319,7 @@ var game = {
 
 			unit.blocked = function () {
 				for (let id in game.object) {
-					if (game.object[id].block) {
+					if (game.object[id].block && id != unit.id) {
 						let phys = unit.phys || unit;
 							phys.x = unit.x + 0.5 * (unit.w - phys.w);
 							phys.y = unit.y + (unit.h - phys.h);
@@ -399,11 +399,9 @@ var game = {
 				}
 			}
 		},
-
 		ab: function (a, b) {
 			return Math.sqrt (Math.pow (a.x - b.x, 2) + Math.pow (a.y - b.y, 2));
 		},
-
 		abr: function (a, b, r) {
 			let ab = game.get.ab (a, b);
 			let k = r / (ab - r);
@@ -411,12 +409,10 @@ var game = {
 			let y = (a.y + k * b.y) / (1 + k);
 			return { x: x, y: y };
 		},
-
 		binbox: function (a, b) {
 			return ((Math.abs (a.x - b.x + 0.5 * (a.w - b.w)) < 0.5 * Math.abs (a.w + b.w)) &&
 								(Math.abs (a.y - b.y + 0.5 * (a.h - b.h)) < 0.5 * Math.abs (a.h + b.h)));
 		},
-
 		clone: function (obj) {
 		    if (null == obj || "object" != typeof obj) return obj;
 		    let copy = new obj.constructor();
@@ -425,18 +421,15 @@ var game = {
 		    }
 		    return copy;
 		},
-
 		font: {
 			width: function (text) {
 				context.font = text.size + 'px ' + text.font;
 				return context.measureText (text.text).width;
 			}
 		},
-
 		hash: function (object) {
 			return '' + object.fill + object.h + object.redraw + object.text + object.w + object.x + object.y + object.z;
 		},
-
 		i: function (i) {
 			if (typeof (i) == 'object') {
 				for (let name of i) {
@@ -448,11 +441,9 @@ var game = {
 				return game.i[i];
 			}
 		},
-
 		pinbox: function (p, b) {
 			return ((p.x > b.x) && (p.x < b.x + b.w) && (p.y > b.y) && (p.y < b.y + b.h));
 		},
-
 		r: function (a, b, c) {
 			if (Array.isArray (a)) {
 				let i = Math.floor (Math.random () * (a.length));

@@ -3,6 +3,7 @@ game.create.cbox = function (_) {
 		cbox.c = {};
 		cbox.c.default = _.fill;
 		cbox.c.error = _.error || '#fff';
+		cbox.overlay = _.overlay || true;
 		cbox.status = 'drop';
 		cbox.type = 'cbox';
 
@@ -26,7 +27,7 @@ game.create.cbox = function (_) {
 		cbox.error = function () {
 			for (let id in game.object) {
 				let object = game.object[id];
-				if (object.type == 'cbox' && id != cbox.id) {
+				if (object.overlay && id != cbox.id) {
 					if (game.get.binbox (cbox, object)) {
 						cbox.fill = cbox.c.error;
 						return true;
@@ -72,6 +73,8 @@ game.create.csprite = function (_) {
 		csprite.i0 = game.get.i (_.i);
 		csprite.ierror = _.ierror || game.get.i (_.i + '_error');
 		csprite.i = game.get.i (_.i);
+		csprite.inversion = _.inversion || false;
+		csprite.overlay = _.overlay || true;
 		csprite.status = 'drop';
 		csprite.type = 'csprite';
 
@@ -95,15 +98,15 @@ game.create.csprite = function (_) {
 		csprite.error = function () {
 			for (let id in game.object) {
 				let object = game.object[id];
-				if (object.type == 'csprite' && id != csprite.id) {
+				if (object.overlay && id != csprite.id) {
 					if (game.get.binbox (csprite, object)) {
 						csprite.i = csprite.ierror;
-						return true;
+						return !csprite.inversion;
 					}
 				}
 			}
 			csprite.i = csprite.i0;
-			return false;
+			return csprite.inversion;
 		}
 
 		csprite.pick = function (event) {
@@ -136,9 +139,64 @@ game.create.csprite = function (_) {
 	return csprite;
 }
 
-game.create.segment = function (_) {
-	let segment = game.create.csprite (_);
-		segment.hp = _.hp || [1, 1];
-		segment.weight = _.weight || 0;
-	return segment;
+game.create.phys = function (_) {
+	let phys = game.create.object (_);
+		phys.g = _.g || 0;
+		phys.waterline = _.waterline || 0;
+
+		phys.collision = function (o) {
+			for (let id in game.object) {
+				let object = game.object[id];
+				if (object.block == true && id != o.id) {
+					if (game.get.binbox (o, object)) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		phys.gravity = function () {
+			for (let id in game.object) {
+				let object = game.object[id];
+				if (object.type == 'item') {
+					object.speed += phys.g;
+					if (!phys.collision ({ h: object.h, id: object.id, w: object.w, x: object.x, y: object.y + object.speed })) {
+						if (object.y + object.h + object.speed < canvas.height - phys.waterline + 0.5 * object.h) {
+							if (object.float <= 0) {
+								object.y = object.y + object.speed;
+								game.zen (object);
+							} else {
+								object.speed = 0;
+							}
+						} else {
+							object.speed = 0;
+						}
+					}
+				}
+			}
+		}
+
+		phys.tick = function () {
+			phys.gravity ();
+		}
+
+	return phys;
+}
+
+game.create.item = function (_) {
+	let item = game.create.csprite (_);
+		item.block = _.block;
+		item.float = _.float || 0;
+		item.hp = _.hp || [1, 1];
+		item.price = _.price || 0;
+		item.speed = 0;
+		item.type = 'item';
+		item.weight = _.weight || 0;
+
+		item.destroy = function (destroy) {
+			if (destroy || item.hp <= 0) { delete game.object[item.id]; }
+		}
+
+	return item;
 }
