@@ -160,24 +160,28 @@ game.create.phys = function (_) {
 			for (let id in game.object) {
 				let object = game.object[id];
 				if (object.type == 'item') {
-					object.speed += phys.g;
-					if (!phys.collision ({ h: object.h, id: object.id, w: object.w, x: object.x, y: object.y + object.speed })) {
-						if (object.y + object.h + object.speed <= canvas.height - phys.waterline + 0.5 * object.h) {
-							if (object.float <= 0) {
-								object.y = object.y + object.speed;
-								game.zen (object);
+					if (object.y + object.h < canvas.height && !phys.collision ({ h: object.h, id: object.id, w: object.w, x: object.x, y: object.y + object.fallspeed + phys.g })) {
+						if (object.y - phys.g + 0.5 * object.h <= phys.waterline) {
+							if (object.weight > 0) {
+								object.fallspeed += phys.g;
+							} else {
+								object.fallspeed = 0;
 							}
 						} else {
-							if (object.y + object.h <= canvas.height) {
-								if (object.float < 0) {
-									object.y = object.y + object.speed;
-									game.zen (object);
-								}
+							if (object.float < 0) {
+								object.fallspeed = phys.g;
 							}
-							object.speed = 0;
+							if (object.float == 0) {
+								object.fallspeed = 0;
+							}
+							if (object.float > 0) {
+								object.fallspeed = -phys.g;
+							}
 						}
+						object.y += object.fallspeed;
+						game.zen (object);
 					} else {
-						object.speed = 0;
+						object.fallspeed = 0;
 					}
 				}
 			}
@@ -196,7 +200,7 @@ game.create.item = function (_) {
 		item.float = _.float || 0;
 		item.hp = _.hp || [1, 1];
 		item.price = _.price || 0;
-		item.speed = 0;
+		item.fallspeed = 0;
 		item.type = 'item';
 		item.weight = _.weight || 0;
 
