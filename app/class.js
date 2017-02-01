@@ -219,3 +219,20 @@ game.create.phys = function (_) {
 
 	return phys;
 }
+
+game.create.ship = function (_) {
+	let ship = game.create.box (_);
+		ship.editing = _.editing || false;
+
+		ship.edit = function (edit) {
+			ship.editing = edit;
+			ship.fill = (edit) ? 'rgba(0,0,0,0.1)' : 'transparent';
+			game.zen (ship);
+		}
+
+		ship.tick = function () {
+
+		}
+
+	return ship;
+}

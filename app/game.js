@@ -11,6 +11,8 @@ game.scene.menu = function () {
 	game.create.sprite ({ h: 520, i: game.i.sea_day, repeat: true, w: 1280, x: 0, y: 0 }).load ();
 
 	//ship
+	let ship = game.create.ship ({ h: 400, w: 500, x: 390, y: 160 }); ship.load ();
+
 	game.create.item ({ block: false, float: 1, h: 50, i: 'sail', w: 50, weight: 0, x: 475, y: 350 }).load ();
 	game.create.item ({ block: false, float: 1, h: 50, i: 'sail', w: 50, weight: 0, x: 475, y: 400 }).load ();
 	game.create.item ({ block: false, float: 1, h: 50, i: 'sail', w: 50, weight: 0, x: 525, y: 350 }).load ();
@@ -25,4 +27,7 @@ game.scene.menu = function () {
 
 	game.create.item ({ block: true, float: -1, h: 50, i: 'box', w: 50, weight: 1, x: 400, y: 100 }).load ();
 	game.create.item ({ block: true, float: -1, h: 25, i: 'bag', w: 50, weight: 1, x: 450, y: 100 }).load ();
+
+	//ui
+	game.create.button ({ action: function () { ship.edit (true); }, h: 50, i: game.i.hammer, w: 50, x: 10, y: 10 }).load ();
 }

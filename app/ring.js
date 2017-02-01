@@ -169,13 +169,13 @@ var game = {
 					if (game.get.pinbox ({ x: event.x, y: event.y }, button)) {
 						if (!button.active) {
 							button.active = true;
-							canvas.style.cursor = 'url(data/cursorlime.png), pointer';
+							canvas.style.cursor = 'pointer';
 							button.in ();
 						}
 					} else {
 						if (button.active) {
 							button.active = false;
-							canvas.style.cursor = 'url(data/cursorose.png), default';
+							canvas.style.cursor = 'default';
 							button.out ();
 						}
 					}
