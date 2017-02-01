@@ -118,6 +118,27 @@ var game = {
 			return animation;
 		},
 
+		bar: function (_) {
+			let bar = game.create.box (_);
+				bar.max = _.max || 1;
+				bar.now = _.now || 1;
+				bar.old = _.old || _.now || 1;
+				bar.w0 = _.w;
+
+				bar.status = function () {
+					if (bar.old != bar.now) {
+						bar.old = bar.now;
+						bar.w = bar.w0 * bar.now / bar.max;
+						game.zen (bar);
+					}
+				}
+
+				bar.tick = function () {
+					bar.status ();
+				}
+			return bar;
+		},
+
 		box: function (_) {
 			let box = game.create.object (_);
 				box.fill = _.fill || 'transparent';

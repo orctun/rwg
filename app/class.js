@@ -253,15 +253,13 @@ game.create.ship = function (_) {
 		}
 
 		ship.status = function () {
-			ship.float = 0;
-			ship.hp = [0, 0];
-			ship.weight = 0;
 			for (let id in game.object) {
 				let object = game.object[id];
 				if (object.my == true) {
 					if (game.get.binbox (object, ship)) {
 						ship.float += object.float;
-						ship.hp += object.hp
+						ship.hp[0] += object.hp[0];
+						ship.hp[1] += object.hp[1];
 						ship.weight += object.weight;
 					}
 				}
