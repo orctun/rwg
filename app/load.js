@@ -7,6 +7,7 @@ game.get.i ([
 	'cap', 'cap_error', //50 100
 	'float', //50 50
 	'hammer', 'hammer_error', //50 50
+	'hud', //500 100
 	'mast', 'mast_error', //25 50
 	'men', 'men_error', //50 100
 	'plank', 'plank_error', //50 50

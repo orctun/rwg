@@ -28,8 +28,11 @@ game.scene.menu = function () {
 		game.create.item ({ block: true, float: -1, h: 50, i: 'box', my: true, w: 50, weight: 1, x: 400, y: 100 }).load ();
 		game.create.item ({ block: true, float: -1, h: 25, i: 'bag', my: true, w: 50, weight: 1, x: 450, y: 100 }).load ();
 
-	//ui
-	let edit = game.create.button ({ action: function () { edit.i = (ship.editing) ? game.i.hammer_error : game.i.hammer; ship.edit (); }, h: 50, i: game.i.hammer_error, w: 50, x: 590, y: 10 }); edit.load ();
 
-	let hp = game.create.bar ({ fill: '#f00', h: 5, now: ship.hp[0], max: ship.hp[1], w: 300, x: 490, y: 100 }); hp.load ();
+	//ui
+	game.create.sprite ({ h: 100, i: game.i.hud, w: 500, x: 390, y: 0, z: 1 }).load ();
+
+	let edit = game.create.button ({ action: function () { edit.i = (ship.editing) ? game.i.hammer_error : game.i.hammer; ship.edit (); }, h: 50, i: game.i.hammer_error, w: 50, x: 415, y: 20, z: 1 }); edit.load ();
+
+	let hp = game.create.bar ({ fill: '#f00', h: 10, now: 6, max: 10, w: 400, x: 441, y: 90 }); hp.load ();
 }

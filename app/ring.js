@@ -122,7 +122,6 @@ var game = {
 			let bar = game.create.box (_);
 				bar.max = _.max || 1;
 				bar.now = _.now || 1;
-				bar.old = _.old || _.now || 1;
 				bar.w0 = _.w;
 
 				bar.status = function () {

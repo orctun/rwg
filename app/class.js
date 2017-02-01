@@ -270,5 +270,6 @@ game.create.ship = function (_) {
 			ship.status ();
 		}
 
+		ship.status ();
 	return ship;
 }
