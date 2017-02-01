@@ -8,7 +8,7 @@ game.scene.menu = function () {
 
 	//nature
 	game.create.box ({ fill: 'rgba(0,0,255,0.5)', h: 200, w: 1280, x: 0, y: 520, z: 1 }).load ();
-	game.create.sprite ({ h: 520, i: game.i.sea_day, repeat: false, w: 1280, x: 0, y: 0 }).load ();
+	game.create.sprite ({ h: 520, i: game.i.sea_day, repeat: true, w: 1280, x: 0, y: 0 }).load ();
 
 	//ship
 	game.create.item ({ block: false, float: 1, h: 50, i: 'sail', w: 50, weight: 0, x: 475, y: 350 }).load ();

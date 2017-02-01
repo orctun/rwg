@@ -139,6 +139,23 @@ game.create.csprite = function (_) {
 	return csprite;
 }
 
+game.create.item = function (_) {
+	let item = game.create.csprite (_);
+		item.block = _.block;
+		item.float = _.float || 0;
+		item.hp = _.hp || [1, 1];
+		item.price = _.price || 0;
+		item.fallspeed = 0;
+		item.type = 'item';
+		item.weight = _.weight || 0;
+
+		item.destroy = function (destroy) {
+			if (destroy || item.hp <= 0) { delete game.object[item.id]; }
+		}
+
+	return item;
+}
+
 game.create.phys = function (_) {
 	let phys = game.create.object (_);
 		phys.g = _.g || 0;
@@ -161,25 +178,34 @@ game.create.phys = function (_) {
 				let object = game.object[id];
 				if (object.type == 'item') {
 					if (object.y + object.h < canvas.height && !phys.collision ({ h: object.h, id: object.id, w: object.w, x: object.x, y: object.y + object.fallspeed + phys.g })) {
-						if (object.y - phys.g + 0.5 * object.h <= phys.waterline) {
+						if (object.y - phys.g + 0.5 * object.h < phys.waterline) {
 							if (object.weight > 0) {
 								object.fallspeed += phys.g;
+								object.y += object.fallspeed;
+								game.zen (object);
 							} else {
 								object.fallspeed = 0;
 							}
-						} else {
+						}
+						if (object.y - phys.g + 0.5 * object.h > phys.waterline) {
 							if (object.float < 0) {
 								object.fallspeed = phys.g;
+								object.y += object.fallspeed;
+								game.zen (object);
 							}
 							if (object.float == 0) {
 								object.fallspeed = 0;
 							}
 							if (object.float > 0) {
 								object.fallspeed = -phys.g;
+								object.y += object.fallspeed;
+								game.zen (object);
 							}
+
 						}
-						object.y += object.fallspeed;
-						game.zen (object);
+						if (object.y - phys.g + 0.5 * object.h == phys.waterline) {
+							object.fallspeed = 0;
+						}
 					} else {
 						object.fallspeed = 0;
 					}
@@ -192,21 +218,4 @@ game.create.phys = function (_) {
 		}
 
 	return phys;
-}
-
-game.create.item = function (_) {
-	let item = game.create.csprite (_);
-		item.block = _.block;
-		item.float = _.float || 0;
-		item.hp = _.hp || [1, 1];
-		item.price = _.price || 0;
-		item.fallspeed = 0;
-		item.type = 'item';
-		item.weight = _.weight || 0;
-
-		item.destroy = function (destroy) {
-			if (destroy || item.hp <= 0) { delete game.object[item.id]; }
-		}
-
-	return item;
 }
