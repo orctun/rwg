@@ -70,7 +70,7 @@ game.create.cbox = function (_) {
 
 game.create.csprite = function (_) {
 	let csprite = game.create.sprite (_);
-		csprite.dnd = _.dnd || true;
+		csprite.dnd = _.dnd || false;
 		csprite.i0 = game.get.i (_.i);
 		csprite.ierror = _.ierror || game.get.i (_.i + '_error');
 		csprite.i = game.get.i (_.i);
@@ -223,8 +223,11 @@ game.create.phys = function (_) {
 
 game.create.ship = function (_) {
 	let ship = game.create.box (_);
+		ship.float = _.float || 0;
+		ship.hp = _.hp || [0, 0];
 		ship.editing = _.editing || false;
 		ship.load = _.load || function () {};
+		ship.weight = _.weight || 0;
 
 		ship.edit = function () {
 			if (!ship.editing) {
@@ -249,8 +252,24 @@ game.create.ship = function (_) {
 			}
 		}
 
-		ship.tick = function () {
+		ship.status = function () {
+			ship.float = 0;
+			ship.hp = [0, 0];
+			ship.weight = 0;
+			for (let id in game.object) {
+				let object = game.object[id];
+				if (object.my == true) {
+					if (game.get.binbox (object, ship)) {
+						ship.float += object.float;
+						ship.hp += object.hp
+						ship.weight += object.weight;
+					}
+				}
+			}
+		}
 
+		ship.tick = function () {
+			ship.status ();
 		}
 
 	return ship;
