@@ -70,6 +70,7 @@ game.create.cbox = function (_) {
 
 game.create.csprite = function (_) {
 	let csprite = game.create.sprite (_);
+		csprite.dnd = _.dnd || true;
 		csprite.i0 = game.get.i (_.i);
 		csprite.ierror = _.ierror || game.get.i (_.i + '_error');
 		csprite.i = game.get.i (_.i);
@@ -110,7 +111,7 @@ game.create.csprite = function (_) {
 		}
 
 		csprite.pick = function (event) {
-			if (game.get.pinbox ({ x: event.x, y: event.y }, csprite)) {
+			if (csprite.dnd == true && game.get.pinbox ({ x: event.x, y: event.y }, csprite)) {
 				csprite.x0 = csprite.x;
 				csprite.y0 = csprite.y;
 				csprite.dx = event.x - csprite.x;
@@ -223,11 +224,29 @@ game.create.phys = function (_) {
 game.create.ship = function (_) {
 	let ship = game.create.box (_);
 		ship.editing = _.editing || false;
+		ship.load = _.load || function () {};
 
-		ship.edit = function (edit) {
-			ship.editing = edit;
-			ship.fill = (edit) ? 'rgba(0,0,0,0.1)' : 'transparent';
-			game.zen (ship);
+		ship.edit = function () {
+			if (!ship.editing) {
+				ship.editing = true;
+				ship.dnd (true);
+				ship.fill = 'rgba(0,0,0,0.1)';
+				game.zen (ship);
+			} else {
+				ship.editing = false;
+				ship.dnd (false);
+				ship.fill = 'transparent';
+				game.zen (ship);
+			}
+		}
+
+		ship.dnd = function (dnd) {
+			for (let id in game.object) {
+				let object = game.object[id];
+				if (object.type == 'item' && object.my == true) {
+					object.dnd = dnd;
+				}
+			}
 		}
 
 		ship.tick = function () {
