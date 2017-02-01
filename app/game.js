@@ -33,6 +33,4 @@ game.scene.menu = function () {
 	game.create.sprite ({ h: 100, i: game.i.hud, w: 500, x: 390, y: 0, z: 1 }).load ();
 
 	let edit = game.create.button ({ action: function () { edit.i = (ship.editing) ? game.i.hammer_error : game.i.hammer; ship.edit (); }, h: 50, i: game.i.hammer_error, w: 50, x: 415, y: 20, z: 1 }); edit.load ();
-
-	let hp = game.create.bar ({ fill: '#f00', h: 10, now: 6, max: 10, w: 400, x: 441, y: 90 }); hp.load ();
 }

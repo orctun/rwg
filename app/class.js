@@ -229,6 +229,12 @@ game.create.ship = function (_) {
 		ship.load = _.load || function () {};
 		ship.weight = _.weight || 0;
 
+		ship.ui = {};
+		ship.ui.hp = game.create.text ({ align: 'center', color: '#fff', text: ship.hp[0] + ' / ' + ship.hp[1], x: 640, y: 88, z: 1 }); ship.ui.hp.load ();
+		ship.ui.hpbar = game.create.bar ({ fill: '#f00', h: 10, now: ship.hp[0], max: 12, w: 400, x: 441, y: 90 }); ship.ui.hpbar.load ();
+
+
+
 		ship.edit = function () {
 			if (!ship.editing) {
 				ship.editing = true;
@@ -252,24 +258,49 @@ game.create.ship = function (_) {
 			}
 		}
 
+		ship.get = {
+			get hp () {
+				ship.status ();
+				return ship.hp[0];
+			},
+			get hpmax () {
+				ship.status ();
+				return ship.hp[1];
+			}
+		}
+
 		ship.status = function () {
+			let float = 0;
+			let hp0 = 0;
+			let hp1 = 0;
+			let weight = 0;
 			for (let id in game.object) {
 				let object = game.object[id];
 				if (object.my == true) {
 					if (game.get.binbox (object, ship)) {
-						ship.float += object.float;
-						ship.hp[0] += object.hp[0];
-						ship.hp[1] += object.hp[1];
-						ship.weight += object.weight;
+						float += object.float;
+						hp0 += object.hp[0];
+						hp1 += object.hp[1];
+						weight += object.weight;
 					}
 				}
 			}
+			ship.float = float;
+			ship.hp[0] = hp0;
+			ship.hp[1] = hp1;
+			ship.weight = weight;
 		}
 
 		ship.tick = function () {
 			ship.status ();
+			ship.ui.status ();
 		}
 
-		ship.status ();
+		ship.ui.status = function () {
+			ship.ui.hp.text = ship.hp[0] + ' / ' + ship.hp[1];
+			ship.ui.hpbar.now = ship.hp[0];
+			ship.ui.hpbar.max = ship.hp[1];
+		}
+
 	return ship;
 }
